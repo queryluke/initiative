@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div role="tabpanel">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#initiative" aria-controls="initiative" role="tab" data-toggle="tab">Initiative</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#players" aria-controls="players" role="tab" data-toggle="tab">Players</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="initiative">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#" class="btn btn-primary" id="deal-cards">Deal</a>
+                                <a href="#" class="btn btn-danger" id="resuffle">Resuffle</a>
+                            </div>
+                            <div class="col-md-6" id="dealt-card-output">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" id="initiative-render">
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="players">
+                        <div class="row">
+                            <div class="player-form-div col-md-12">
+                                <form id="player-form">
+                                    <fieldset id="player-list">
+                                    </fieldset>
+                                    <!--<a href="#" class="btn btn-default" id="add-new-player">Add Player</a>-->
+                                    <input type="submit" class="btn btn-success" value="Add Player">
+                                </form>
+                                <a href="#" class="btn btn-default" id="remove-players">Remove All Players</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="jquery-1.11.3.js"></script>
+<script type="text/javascript" src="js.cookie.js"></script>
+<script type="text/javascript" src="js.serializeJSON.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="initiative.js"></script>
+</html>
