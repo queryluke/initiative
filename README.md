@@ -4,7 +4,7 @@ NOTE: Does not work in Chrome unless you programmatically allow cookies from loc
 
 # Use
 1. Download and unzip.
-2. Open in Firefox or Safari
+2. Open index.html in Firefox or Safari
 3. Click on the "Players" tab
 4. Add all PC and NPC names (stats in future versions)
 5. Click on the initiative tab
