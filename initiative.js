@@ -51,15 +51,20 @@
          if(wounds == 6 ){
             var woundOutput = 'wound1';
          }
-         output += '<div class="player col-md-3 well '+ v.shaken+' '+woundOutput+'" data-id="'+ v.id+'"><h4>'+v.card+': '+v.name+'</h4>';
+         output += '<div class="player col-md-4 well '+ v.shaken+' '+woundOutput+'" data-id="'+ v.id+'">';
+         output += '<div class="row"><div class="col-sm-8"><h4>'+v.card+': '+v.name+'</h4></div><div class="col-sm-4">';
          if(v.quick == 1 && v.card > 34){
-            output += '<button type="button" class="btn btn-info discard">Discard</button>';
+            output += '<button type="button" class="btn btn-info btn-sm discard"><i class="fa fa-repeat"></i> Discard</button>';
          }
-         output += '<button type="button" class="btn btn-warning player-shaken '+shakenActive+'" data-toggle="button" aria-pressed="false" autocomplete="off">Shaken</button>';
+         output += '</div></div><div class="row">';
+         output += '<div class="col-sm-4"><dl><dt>Toughness:</dt><dd>'+ v.toughness+'</dd></dl></div>';
+         output += '<div class="col-sm-4"><dl><dt>Parry:</dt><dd>'+ v.parry+'</dd></dl></div>';
+         output += '<div class="col-sm-4"><button type="button" class="btn btn-warning btn-sm pull-right player-shaken '+shakenActive+'" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="fa fa-heartbeat"></i> Shaken</button></div>';
+         output += '</div><div class="row">';
          output += '<button type="button" class="btn btn-danger player-wound1 '+wound1Active+'" data-toggle="button" aria-pressed="false" autocomplete="off">Wound 1</button>';
          output += '<button type="button" class="btn btn-danger player-wound2 '+wound2Active+'" data-toggle="button" aria-pressed="false" autocomplete="off">Wound 2</button>';
          output += '<button type="button" class="btn btn-danger player-wound3 '+wound3Active+'" data-toggle="button" aria-pressed="false" autocomplete="off">Wound 3</button>';
-         output += '</div></div>';
+         output += '</div></div></div>';
       });
       this.html(output);
       return this;
