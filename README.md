@@ -9,7 +9,7 @@ NOTE: Does not work in Chrome unless you programmatically allow cookies from loc
 4. Add all PC and NPC names (stats in future versions)
 5. Click on the initiative tab
 6. Click Deal to deal out a new initiative round 
--- players should be sorted, but their card - i.e. number from 1-55 - appears to the left of their name so you can check
+-- players should be sorted, but their card - i.e. number from 1-54 - appears to the left of their name so you can check
 7. Reshuffle when you run out of cards
 
 # Features
