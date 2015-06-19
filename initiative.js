@@ -12,7 +12,10 @@
          playerArray.push({'id':players.length+1,'name':'','toughness':'0/0','parry':0});
       }
       $.each(playerArray,function(i,v){
-         output += '<div class="player-input col-md-4 well">';
+         output += '<div class="player-input col-md-4 well player" data-id="'+ v.id+'">';
+            if(v.name != ''){
+               output += '<div class="col-sm-12"><button class="btn btn-danger player-remove pull-right btn-sm"><i class="fa fa-remove"></i></button></div>';
+            }
             output += '<div class="form-group"><label for="player-input-'+v.id+'">Player Name</label>';
                output += '<input type="text" class="form-control player-input" id="player-input-'+v.id+'" name="playerList[][name]" value="'+v.name+'"/>';
                output += '<input type="hidden" class="form-control player-input" id="player-id-'+v.id+'" name="playerList[][id]" value="'+v.id+'"/>'
@@ -52,6 +55,7 @@
             var woundOutput = 'wound1';
          }
          output += '<div class="player col-md-4 well '+ v.shaken+' '+woundOutput+'" data-id="'+ v.id+'">';
+         output += '<div class="row"><div class="col-sm-12"><button class="btn btn-danger player-remove pull-right btn-sm"><i class="fa fa-remove"></i></button></div></div>';
          output += '<div class="row"><div class="col-sm-8"><h4>'+v.card+': '+v.name+'</h4></div><div class="col-sm-4">';
          if(v.quick == 1 && v.card > 34){
             output += '<button type="button" class="btn btn-info btn-sm discard"><i class="fa fa-repeat"></i> Discard</button>';
@@ -203,6 +207,7 @@ $(function(){
          }
       });
       Cookies.set('players',players);
+      $('#player-list').renderEditForm(players);
    });
 
    $('#add-player').click(function(e){
@@ -337,6 +342,23 @@ $(function(){
          $('#dealt-card-output').html('Only '+left+' cards left.');
       }
    });
+
+   //Remove
+   $('body').on('click','.player-remove',function(){
+      //Need to get a better search function
+      var playerID = $(this).parents('.player').data('id');
+      var playerKey = '';
+      $.each(players,function(i,v){
+         if(v.id == playerID){
+            playerKey = i;
+         }
+      });
+      players.splice(playerKey,1);
+      Cookies.set('players',players);
+      $('#initiative-render').renderCharacters(players);
+      $('#player-list').renderEditForm(players);
+   });
+
    console.log(players);
 
 });
