@@ -11,3 +11,17 @@
     background-color: black;
     color: #ffffff;
 }
+.nav-tabs li a{
+    border: 1px solid #ddd;
+}
+#deck-container{
+    margin-top: 1em;
+}
+#dealt-card-output{
+    color: #eee;
+}
+#initiative-render{
+    margin-top: 1em;
+}
+.player{
+}

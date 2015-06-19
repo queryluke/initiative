@@ -7,15 +7,27 @@
       var output = '';
       var playerArray = players.slice();
       if(playerArray.length == 0){
-         playerArray.push({'id':1,'name':''});
+         playerArray.push({'id':1,'name':'','toughness':'0/0','parry':0});
       } else {
-         playerArray.push({'id':players.length+1,'name':''});
+         playerArray.push({'id':players.length+1,'name':'','toughness':'0/0','parry':0});
       }
       $.each(playerArray,function(i,v){
-         output += '<div class="player-input col-md-4"><div class="form-group"><label for="player-input-'+v.id+'">Player Name</label>';
-         output += '<input type="text" class="form-control player-input" id="player-input-'+v.id+'" name="playerList[][name]" value="'+v.name+'"/>';
-         output += '<input type="hidden" class="form-control player-input" id="player-id-'+v.id+'" name="playerList[][id]" value="'+v.id+'"/>'
-         output += '</div></div>';
+         output += '<div class="player-input col-md-4 well">';
+            output += '<div class="form-group"><label for="player-input-'+v.id+'">Player Name</label>';
+               output += '<input type="text" class="form-control player-input" id="player-input-'+v.id+'" name="playerList[][name]" value="'+v.name+'"/>';
+               output += '<input type="hidden" class="form-control player-input" id="player-id-'+v.id+'" name="playerList[][id]" value="'+v.id+'"/>'
+            output += '</div>';
+            output += '<div class="form-group"><label for="toughness-input-'+v.id+'">Toughness</label>';
+               output += '<input type="text" class="form-control player-input" id="toughness-input-'+v.id+'" name="playerList[][toughness]" value="'+v.toughness+'"/>';
+            output += '</div>';
+            output += '<div class="form-group"><label for="parry-input-'+v.id+'">Parry</label>';
+               output += '<input type="text" class="form-control player-input" id="parry-input-'+v.id+'" name="playerList[][parry]" value="'+v.parry+'"/>';
+            output += '</div>';
+            output += '<div class="checkbox"><label>';
+               var checked = v.quick == 1 ? 'checked' : '';
+               output += '<input type="checkbox" id="quick-input-'+v.id+'" name="playerList[][quick]" value="1" '+checked+'/>Quick';
+            output += '</label></div>';
+         output += '</div>';
       });
       this.html(output);
       return this;
@@ -39,7 +51,10 @@
          if(wounds == 6 ){
             var woundOutput = 'wound1';
          }
-         output += '<div class="player col-md-4 well '+ v.shaken+' '+woundOutput+'" data-id="'+ v.id+'"><h4>'+v.card+': '+v.name+'</h4>';
+         output += '<div class="player col-md-3 well '+ v.shaken+' '+woundOutput+'" data-id="'+ v.id+'"><h4>'+v.card+': '+v.name+'</h4>';
+         if(v.quick == 1 && v.card > 34){
+            output += '<button type="button" class="btn btn-info discard">Discard</button>';
+         }
          output += '<button type="button" class="btn btn-warning player-shaken '+shakenActive+'" data-toggle="button" aria-pressed="false" autocomplete="off">Shaken</button>';
          output += '<button type="button" class="btn btn-danger player-wound1 '+wound1Active+'" data-toggle="button" aria-pressed="false" autocomplete="off">Wound 1</button>';
          output += '<button type="button" class="btn btn-danger player-wound2 '+wound2Active+'" data-toggle="button" aria-pressed="false" autocomplete="off">Wound 2</button>';
@@ -56,11 +71,23 @@ $(function(){
    function Deck(){
       //Init functions
       this.cards = [];
-      for (i = 1; i < 55; i++) {
+      for (i = 1; i <= 54; i++) {
          this.cards.push(i);
       }
 
       this.deal = function(){
+         //IF Quickness were not a choice
+         /*if(quickness == 1){
+            var card = 54;
+            while(card > 34){
+               var key = Math.floor(Math.random() * this.cards.length);
+               card = this.cards[key];
+               console.log(card+' '+key);
+            }
+         } else {
+            var key = Math.floor(Math.random() * this.cards.length);
+            var card = this.cards[key];
+         }*/
          var key = Math.floor(Math.random() * this.cards.length);
          var card = this.cards[key];
          this.cards.splice(key,1);
@@ -72,9 +99,12 @@ $(function(){
       }
    }
 
-   function Player(id,name,shaken,wound1,wound2,wound3){
+   function Player(id,name,toughness,parry,quick,shaken,wound1,wound2,wound3){
       this.id = id;
       this.name = name;
+      this.toughness = toughness;
+      this.parry = parry;
+      this.quick = quick;
       this.shaken = shaken;
       this.wound1 = wound1;
       this.wound2 = wound2;
@@ -146,7 +176,7 @@ $(function(){
 
    if($.isEmptyObject(Cookies.get('players')) == false){
       jQuery.each(Cookies.get('players'),function(i,v){
-         players.push(new Player(v.id, v.name, v.shaken, v.wound1, v.wound2, v.wound3));
+         players.push(new Player(v.id, v.name, v.toughness, v.parry, v.quick, v.shaken, v.wound1, v.wound2, v.wound3));
       });
    }
 
@@ -161,13 +191,19 @@ $(function(){
       e.preventDefault();
       var playersViaForm = $(this).serializeJSON();
       players = [];
+      console.log(playersViaForm);
       jQuery.each(playersViaForm.playerList, function(i,player){
          if(player.name.length !== 0){
-            players.push(new Player(player.id,player.name,player.shaken,player.wound1,player.wound2,player.wound3));
+            players.push(new Player(player.id,player.name,player.toughness,player.parry,player.quick,player.shaken,player.wound1,player.wound2,player.wound3));
          }
       });
-      $('#player-list').renderEditForm(players);
       Cookies.set('players',players);
+   });
+
+   $('#add-player').click(function(e){
+      e.preventDefault();
+      $('#player-form').submit();
+      $('#player-list').renderEditForm(players);
    });
 
 
@@ -182,7 +218,7 @@ $(function(){
          var output = '';
          $('#initiative-render').renderCharacters(players);
          var left = deck.cards.length;
-         if(left < 1){
+         if(left < players.length){
             $('#dealt-card-output').html('You need to reshuffle');
          } else {
             $('#dealt-card-output').html('Only '+left+' cards left.');
@@ -270,6 +306,31 @@ $(function(){
       }
       Cookies.set('players',players);
       $('#initiative-render').renderCharacters(players);
+   });
+
+   //Discard for quickness characters
+   //What happens when a player discards the last card???
+   //How to reshuffle but keep current initiative
+   $('body').on('click','.discard',function(){
+      //Need to get a better search function
+      var playerID = $(this).parents('.player').data('id');
+      var playerKey = '';
+      $.each(players,function(i,v){
+         if(v.id == playerID){
+            playerKey = i;
+         }
+      });
+      var left = deck.cards.length;
+      if(left < 1){
+         $('#dealt-card-output').html('You need to reshuffle');
+      } else {
+         players[playerKey].setCard(deck.deal());
+         left = deck.cards.length;
+         Cookies.set('deck',deck);
+         players.sort(sortInitiative);
+         $('#initiative-render').renderCharacters(players);
+         $('#dealt-card-output').html('Only '+left+' cards left.');
+      }
    });
    console.log(players);
 

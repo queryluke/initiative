@@ -23,11 +23,18 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="initiative">
                         <div class="row">
-                            <div class="col-md-6">
-                                <a href="#" class="btn btn-primary" id="deal-cards">Deal</a>
-                                <a href="#" class="btn btn-danger" id="resuffle">Resuffle</a>
-                            </div>
-                            <div class="col-md-6" id="dealt-card-output">
+                            <div id="deck-container" class="col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-offset-1">
+                                        <a href="#" class="btn btn-primary btn-lg" id="deal-cards">Deal</a>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <h4 id="dealt-card-output"></h4>
+                                    </div>
+                                    <div class="col-sm-4 col-md-3">
+                                        <a href="#" class="btn btn-danger btn-lg pull-right" id="resuffle">Resuffle</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -42,7 +49,8 @@
                                     <fieldset id="player-list">
                                     </fieldset>
                                     <!--<a href="#" class="btn btn-default" id="add-new-player">Add Player</a>-->
-                                    <input type="submit" class="btn btn-success" value="Add Player">
+                                    <input type="submit" class="btn btn-success" value="Set Players">
+                                    <a href="#" class="btn btn-primary" id="add-player">Add Players</a>
                                 </form>
                                 <a href="#" class="btn btn-default" id="remove-players">Remove All Players</a>
                             </div>
