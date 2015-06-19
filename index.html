@@ -7,6 +7,10 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
 
     <title>Initiative by roastduckalamode</title>
   </head>
@@ -26,37 +30,96 @@
       </div>
     </header>
 
-    <div class="container">
-      <section id="main_content">
-        <h1>
-<a id="initiative" class="anchor" href="#initiative" aria-hidden="true"><span class="octicon octicon-link"></span></a>initiative</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div role="tabpanel">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#initiative" aria-controls="initiative" role="tab" data-toggle="tab">Initiative</a>
+            </li>
+            <li role="presentation">
+              <a href="#players" aria-controls="players" role="tab" data-toggle="tab">Players</a>
+            </li>
+            <li role="presentation">
+              <a href="#docs" aria-controls="docs" role="tab" data-toggle="tab">Docs</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="initiative">
+              <div class="row">
+                <div id="deck-container" class="col-md-12">
+                  <div class="row">
+                    <div class="col-sm-3 col-md-offset-1">
+                      <a href="#" class="btn btn-primary btn-lg" id="deal-cards">Deal</a>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                      <h4 id="dealt-card-output"></h4>
+                    </div>
+                    <div class="col-sm-4 col-md-3">
+                      <a href="#" class="btn btn-danger btn-lg pull-right" id="resuffle">Resuffle</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12" id="initiative-render">
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="players">
+              <div class="row">
+                <div class="player-form-div col-md-12">
+                  <form id="player-form">
+                    <fieldset id="player-list">
+                    </fieldset>
+                    <!--<a href="#" class="btn btn-default" id="add-new-player">Add Player</a>-->
+                    <input type="submit" class="btn btn-success" value="Set Players">
+                    <a href="#" class="btn btn-primary" id="add-player">Add Players</a>
+                  </form>
+                  <a href="#" class="btn btn-default" id="remove-players">Remove All Players</a>
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="docs">
+              <h1>
+                <a id="initiative" class="anchor" href="#initiative" aria-hidden="true"><span class="octicon octicon-link"></span></a>initiative</h1>
 
-<p>NOTE: Does not work in Chrome unless you programmatically allow cookies from local files</p>
+              <p>NOTE: Does not work in Chrome unless you programmatically allow cookies from local files</p>
 
-<h1>
-<a id="use" class="anchor" href="#use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use</h1>
+              <h1>
+                <a id="use" class="anchor" href="#use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use</h1>
 
-<ol>
-<li>Download and unzip.</li>
-<li>Open index.html in Firefox or Safari</li>
-<li>Click on the "Players" tab</li>
-<li>Add all PC and NPC names (stats in future versions)</li>
-<li>Click on the initiative tab</li>
-<li>Click Deal to deal out a new initiative round 
--- players should be sorted, but their card - i.e. number from 1-54 - appears to the left of their name so you can check</li>
-<li>Reshuffle when you run out of cards</li>
-</ol>
+              <ol>
+                <li>Download and unzip.</li>
+                <li>Open index.html in Firefox or Safari</li>
+                <li>Click on the "Players" tab</li>
+                <li>Add all PC and NPC names (stats in future versions)</li>
+                <li>Click on the initiative tab</li>
+                <li>Click Deal to deal out a new initiative round
+                  -- players should be sorted, but their card - i.e. number from 1-54 - appears to the left of their name so you can check</li>
+                <li>Reshuffle when you run out of cards</li>
+              </ol>
 
-<h1>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h1>
+              <h1>
+                <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h1>
 
-<ol>
-<li>Track Wounds and Shaken status</li>
-<li>Uses local cookies, so you can safely (or accidentally) refresh the browser window</li>
-</ol>
-      </section>
+              <ol>
+                <li>Track Wounds and Shaken status</li>
+                <li>Uses local cookies, so you can safely (or accidentally) refresh the browser window</li>
+              </ol>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    
-  </body>
+</div>
+</body>
+<script type="text/javascript" src="jquery-1.11.3.js"></script>
+<script type="text/javascript" src="js.cookie.js"></script>
+<script type="text/javascript" src="js.serializeJSON.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="initiative.js"></script>
 </html>
