@@ -3,34 +3,38 @@
  */
 
 (function($){
-   $.fn.renderEditForm = function(players){
+   $.fn.renderEditForm = function(players,type){
+      var typeName = type == 1 ? 'Player' : 'NPC';
       var output = '';
       var playerArray = players.slice();
       if(playerArray.length == 0){
-         playerArray.push({'id':1,'name':'','toughness':'0/0','parry':0});
+         playerArray.push({'id':1,'name':'','toughness':'0/0','parry':0,'type':type});
       } else {
-         playerArray.push({'id':players.length+1,'name':'','toughness':'0/0','parry':0});
+         playerArray.push({'id':players.length+1,'name':'','toughness':'0/0','parry':0,'type':type});
       }
       $.each(playerArray,function(i,v){
-         output += '<div class="player-input col-md-4 well player" data-id="'+ v.id+'">';
-            if(v.name != ''){
-               output += '<div class="col-sm-12"><button class="btn btn-danger player-remove pull-right btn-sm"><i class="fa fa-remove"></i></button></div>';
-            }
-            output += '<div class="form-group"><label for="player-input-'+v.id+'">Player Name</label>';
-               output += '<input type="text" class="form-control player-input" id="player-input-'+v.id+'" name="playerList[][name]" value="'+v.name+'"/>';
-               output += '<input type="hidden" class="form-control player-input" id="player-id-'+v.id+'" name="playerList[][id]" value="'+v.id+'"/>'
+         if(v.type == type){
+            output += '<div class="player-input col-md-4 well player" data-id="'+ v.id+'">';
+               if(v.name != ''){
+                  output += '<div class="col-sm-12"><button class="btn btn-danger player-remove pull-right btn-sm"><i class="fa fa-remove"></i></button></div>';
+               }
+               output += '<div class="form-group"><label for="player-input-'+v.id+'">'+typeName+' Name</label>';
+                  output += '<input type="text" class="form-control player-input" id="player-input-'+v.id+'" name="playerList[][name]" value="'+v.name+'"/>';
+                  output += '<input type="hidden" class="form-control player-input" id="player-id-'+v.id+'" name="playerList[][id]" value="'+v.id+'"/>'
+               output += '</div>';
+               output += '<div class="form-group"><label for="toughness-input-'+v.id+'">Toughness</label>';
+                  output += '<input type="text" class="form-control player-input" id="toughness-input-'+v.id+'" name="playerList[][toughness]" value="'+v.toughness+'"/>';
+               output += '</div>';
+               output += '<div class="form-group"><label for="parry-input-'+v.id+'">Parry</label>';
+                  output += '<input type="text" class="form-control player-input" id="parry-input-'+v.id+'" name="playerList[][parry]" value="'+v.parry+'"/>';
+               output += '</div>';
+               output += '<div class="checkbox"><label>';
+                  var checked = v.quick == 1 ? 'checked' : '';
+                  output += '<input type="checkbox" id="quick-input-'+v.id+'" name="playerList[][quick]" value="1" '+checked+'/>Quick';
+               output += '</label></div>';
+               output += '<input type="hidden" class="form-control player-input" id="type-input-'+v.id+'" name="playerList[][type]" value="'+type+'"/>';
             output += '</div>';
-            output += '<div class="form-group"><label for="toughness-input-'+v.id+'">Toughness</label>';
-               output += '<input type="text" class="form-control player-input" id="toughness-input-'+v.id+'" name="playerList[][toughness]" value="'+v.toughness+'"/>';
-            output += '</div>';
-            output += '<div class="form-group"><label for="parry-input-'+v.id+'">Parry</label>';
-               output += '<input type="text" class="form-control player-input" id="parry-input-'+v.id+'" name="playerList[][parry]" value="'+v.parry+'"/>';
-            output += '</div>';
-            output += '<div class="checkbox"><label>';
-               var checked = v.quick == 1 ? 'checked' : '';
-               output += '<input type="checkbox" id="quick-input-'+v.id+'" name="playerList[][quick]" value="1" '+checked+'/>Quick';
-            output += '</label></div>';
-         output += '</div>';
+         }
       });
       this.html(output);
       return this;
@@ -54,9 +58,11 @@
          if(wounds == 6 ){
             var woundOutput = 'wound1';
          }
+         var joker = v.card < 3 ? '(joker)' : '';
+         var jokerTitle = v.card < 3 ? 'joker-title' : '';
          output += '<div class="player col-md-4 well '+ v.shaken+' '+woundOutput+'" data-id="'+ v.id+'">';
          output += '<div class="row"><div class="col-sm-12"><button class="btn btn-danger player-remove pull-right btn-sm"><i class="fa fa-remove"></i></button></div></div>';
-         output += '<div class="row"><div class="col-sm-8"><h4>'+v.card+': '+v.name+'</h4></div><div class="col-sm-4">';
+         output += '<div class="row"><div class="col-sm-8"><h4 class="'+jokerTitle+'">'+v.card+': '+v.name+' '+joker+'</h4></div><div class="col-sm-4">';
          if(v.quick == 1 && v.card > 34){
             output += '<button type="button" class="btn btn-info btn-sm discard"><i class="fa fa-repeat"></i> Discard</button>';
          }
@@ -108,7 +114,7 @@ $(function(){
       }
    }
 
-   function Player(id,name,toughness,parry,quick,shaken,wound1,wound2,wound3){
+   function Player(id,name,toughness,parry,quick,shaken,wound1,wound2,wound3,type){
       this.id = id;
       this.name = name;
       this.toughness = toughness;
@@ -118,6 +124,7 @@ $(function(){
       this.wound1 = wound1;
       this.wound2 = wound2;
       this.wound3 = wound3;
+      this.type = type;
       this.setCard = function(card){
          this.card = card;
       }
@@ -185,35 +192,67 @@ $(function(){
 
    if($.isEmptyObject(Cookies.get('players')) == false){
       jQuery.each(Cookies.get('players'),function(i,v){
-         players.push(new Player(v.id, v.name, v.toughness, v.parry, v.quick, v.shaken, v.wound1, v.wound2, v.wound3));
+         players.push(new Player(v.id, v.name, v.toughness, v.parry, v.quick, v.shaken, v.wound1, v.wound2, v.wound3,v.type));
       });
    }
 
-   $('#player-list').renderEditForm(players);
+   $('#player-list').renderEditForm(players,1);
+   $('#npc-list').renderEditForm(players,2);
 
-   $('#remove-players').click(function(){
+   /*$('#remove-players').click(function(){
       Cookies.remove('players');
-   });
-
+   });*/
 
    $('#player-form').submit(function(e){
       e.preventDefault();
       var playersViaForm = $(this).serializeJSON();
+      var npcsViaForm = $('#npc-form').serializeJSON();
       players = [];
       console.log(playersViaForm);
       jQuery.each(playersViaForm.playerList, function(i,player){
          if(player.name.length !== 0){
-            players.push(new Player(player.id,player.name,player.toughness,player.parry,player.quick,player.shaken,player.wound1,player.wound2,player.wound3));
+            players.push(new Player(player.id,player.name,player.toughness,player.parry,player.quick,player.shaken,player.wound1,player.wound2,player.wound3,player.type));
+         }
+      });
+      jQuery.each(npcsViaForm.playerList, function(i,player){
+         if(player.name.length !== 0){
+            players.push(new Player(player.id,player.name,player.toughness,player.parry,player.quick,player.shaken,player.wound1,player.wound2,player.wound3,player.type));
          }
       });
       Cookies.set('players',players);
-      $('#player-list').renderEditForm(players);
+      $('#player-list').renderEditForm(players,1);
    });
 
    $('#add-player').click(function(e){
       e.preventDefault();
       $('#player-form').submit();
-      $('#player-list').renderEditForm(players);
+      $('#player-list').renderEditForm(players,1);
+   });
+
+   $('#npc-form').submit(function(e){
+      e.preventDefault();
+      var playersViaForm = $('#player-form').serializeJSON();
+      var npcsViaForm = $(this).serializeJSON();
+      players = [];
+      console.log(playersViaForm);
+      jQuery.each(playersViaForm.playerList, function(i,player){
+         if(player.name.length !== 0){
+            players.push(new Player(player.id,player.name,player.toughness,player.parry,player.quick,player.shaken,player.wound1,player.wound2,player.wound3,player.type));
+         }
+      });
+      jQuery.each(npcsViaForm.playerList, function(i,player){
+         if(player.name.length !== 0){
+            players.push(new Player(player.id,player.name,player.toughness,player.parry,player.quick,player.shaken,player.wound1,player.wound2,player.wound3,player.type));
+         }
+      });
+      Cookies.set('players',players);
+      $('#npc-list').renderEditForm(players,2);
+   });
+
+   $('#add-npc').click(function(e){
+      e.preventDefault();
+      $('#npc-form').submit();
+      $('#npc-list').renderEditForm(players,2);
    });
 
 
@@ -348,15 +387,18 @@ $(function(){
       //Need to get a better search function
       var playerID = $(this).parents('.player').data('id');
       var playerKey = '';
+      var playerType = '';
       $.each(players,function(i,v){
          if(v.id == playerID){
             playerKey = i;
+            playerType = v.type;
          }
       });
       players.splice(playerKey,1);
       Cookies.set('players',players);
       $('#initiative-render').renderCharacters(players);
-      $('#player-list').renderEditForm(players);
+      $('#player-list').renderEditForm(players,1);
+      $('#npc-list').renderEditForm(players,2);
    });
 
    console.log(players);

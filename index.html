@@ -20,6 +20,9 @@
                     <li role="presentation">
                         <a href="#players" aria-controls="players" role="tab" data-toggle="tab">Players</a>
                     </li>
+                    <li role="presentation">
+                        <a href="#npcs" aria-controls="npcs" role="tab" data-toggle="tab">NPCs</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="initiative">
@@ -53,7 +56,21 @@
                                     <input type="submit" class="btn btn-success" value="Set Players">
                                     <a href="#" class="btn btn-primary" id="add-player">Add Players</a>
                                 </form>
-                                <a href="#" class="btn btn-default" id="remove-players">Remove All Players</a>
+                                <!--<a href="#" class="btn btn-default" id="remove-players">Remove All Players</a>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="npcs">
+                        <div class="row">
+                            <div class="player-form-div col-md-12">
+                                <form id="npc-form">
+                                    <fieldset id="npc-list">
+                                    </fieldset>
+                                    <!--<a href="#" class="btn btn-default" id="add-new-player">Add Player</a>-->
+                                    <input type="submit" class="btn btn-success" value="Set NPCs">
+                                    <a href="#" class="btn btn-primary" id="add-npc">Add NPCs</a>
+                                </form>
+                                <!--<a href="#" class="btn btn-default" id="remove-npc">Remove All NPCs</a>-->
                             </div>
                         </div>
                     </div>
