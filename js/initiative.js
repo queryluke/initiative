@@ -237,7 +237,7 @@ $(function(){
       }
    });
 
-   $('#resuffle').click(function(e){
+   $('#reshuffle').click(function(e){
       e.preventDefault();
       var deck = new Deck();
       Cookies.set('deck',deck);
